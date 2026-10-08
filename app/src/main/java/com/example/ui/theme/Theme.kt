@@ -1,0 +1,59 @@
+package com.example.ui.theme
+
+import android.app.Activity
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+
+private val DarkColorScheme = darkColorScheme(
+    primary = NovaPrimaryRed,
+    onPrimary = Color.White,
+    primaryContainer = NovaPrimaryRedLight,
+    onPrimaryContainer = Color.White,
+    secondary = NovaAccentCyan,
+    onSecondary = Color.Black,
+    tertiary = NovaGoldRating,
+    onTertiary = Color.Black,
+    background = NovaDarkBackground,
+    onBackground = TextPrimary,
+    surface = NovaSurfaceDark,
+    onSurface = TextPrimary,
+    surfaceVariant = NovaSurfaceVariant,
+    onSurfaceVariant = TextSecondary,
+    outline = NovaBorder,
+    error = NovaLiveRed,
+    onError = Color.White
+)
+
+@Composable
+fun MyApplicationTheme(
+    darkTheme: Boolean = true,
+    dynamicColor: Boolean = false, // Preserve our signature streaming visual identity
+    content: @Composable () -> Unit
+) {
+    val colorScheme = DarkColorScheme
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as? Activity)?.window
+            if (window != null) {
+                window.statusBarColor = Color.Transparent.toArgb()
+                window.navigationBarColor = Color.Transparent.toArgb()
+                val insetsController = WindowCompat.getInsetsController(window, view)
+                insetsController.isAppearanceLightStatusBars = false
+                insetsController.isAppearanceLightNavigationBars = false
+            }
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
+}
